@@ -58,7 +58,7 @@ namespace LibraryApp.Infrastructure.Data
                 new Reader { Id = 3, Firstname = "Вахид", Lastname = "Уходько" });
             modelBuilder.Entity<Book>().HasData(
                 new Book { Id = 1, Author = "Роберт Шекли", Title = "Секретное оружие" },
-                new Book { Id = 2, Author = "Фрэнк Герберт", Title = "Дюна"},
+                new Book { Id = 2, Author = "Фрэнк Герберт", Title = "Дюна", OrderId = 2},
                 new Book { Id = 3, Author = "Рэй Брэдбери", Title = "451 градус по фаренгейту" },
                 new Book { Id = 4, Author = "Борис Стругацкий", Title = "Пикник на обочине" },
                 new Book { Id = 5, Author = "Дмитрий Глуховский", Title = "Метро 2033" });
