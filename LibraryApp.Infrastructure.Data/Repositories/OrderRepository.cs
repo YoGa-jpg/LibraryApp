@@ -21,6 +21,10 @@ namespace LibraryApp.Infrastructure.Data.Repositories
         {
             throw new NotImplementedException();
         }
+        public void Delete(int id)
+        {
+            throw new NotImplementedException();
+        }
 
         public Order GetOrder(int id)
         {
