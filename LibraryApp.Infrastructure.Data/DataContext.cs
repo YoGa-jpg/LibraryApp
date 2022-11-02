@@ -14,9 +14,6 @@ namespace LibraryApp.Infrastructure.Data
         public DbSet<Reader> Readers { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
-        public DataContext(DbContextOptions<DataContext> options)
-            : base(options) { }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Reader>()

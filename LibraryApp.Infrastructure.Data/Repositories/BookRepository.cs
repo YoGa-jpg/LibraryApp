@@ -9,7 +9,7 @@ using LibraryApp.Domain.Interfaces;
 
 namespace LibraryApp.Infrastructure.Data.Repositories
 {
-    internal class BookRepository : IBookRepository
+    public class BookRepository : IBookRepository
     {
         private DataContext dataContext;
 
