@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using LibraryApp.Domain.Core;
 using LibraryApp.Domain.Interfaces;
 
@@ -19,27 +20,29 @@ namespace LibraryApp.Infrastructure.Data.Repositories
 
         public void Create(Reader reader)
         {
-            throw new NotImplementedException();
+            dataContext.Readers.Add(reader);
         }
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Reader reader = dataContext.Readers.Find(id);
+            if (reader != null)
+                dataContext.Readers.Remove(reader);
         }
 
         public Reader GetReader(int id)
         {
-            throw new NotImplementedException();
+            return dataContext.Readers.Find(id);
         }
 
         public IEnumerable<Reader> GetReaders()
         {
-            throw new NotImplementedException();
+            return dataContext.Readers;
         }
 
         public void Update(Reader reader)
         {
-            throw new NotImplementedException();
+            dataContext.Entry(reader).State = EntityState.Modified;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using LibraryApp.Domain.Core;
 using LibraryApp.Domain.Interfaces;
 
@@ -19,26 +20,28 @@ namespace LibraryApp.Infrastructure.Data.Repositories
 
         public void Create(Order order)
         {
-            throw new NotImplementedException();
+            dataContext.Orders.Add(order);
         }
         public void Delete(int id)
         {
-            throw new NotImplementedException();
+            Order order = dataContext.Orders.Find(id);
+            if(order != null)
+                dataContext.Orders.Remove(order);
         }
 
         public Order GetOrder(int id)
         {
-            throw new NotImplementedException();
+            return dataContext.Orders.Find(id);
         }
 
         public IEnumerable<Order> GetOrders()
         {
-            throw new NotImplementedException();
+            return dataContext.Orders;
         }
 
         public void Update(Order order)
         {
-            throw new NotImplementedException();
+            dataContext.Entry(order).State = EntityState.Modified;
         }
     }
 }
