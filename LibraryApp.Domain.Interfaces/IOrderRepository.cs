@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Domain.Interfaces
 {
-    internal interface IOrderRepository : IDisposable
+    public interface IOrderRepository
     {
         IEnumerable<Order> GetOrders();
         Order GetOrder(int id);

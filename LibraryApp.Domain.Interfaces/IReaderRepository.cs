@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Domain.Interfaces
 {
-    internal interface IReaderRepository : IDisposable
+    public interface IReaderRepository
     {
         IEnumerable<Reader> GetReaders();
         Reader GetReader(int id);

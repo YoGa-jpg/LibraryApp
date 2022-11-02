@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LibraryApp.Domain.Interfaces
 {
-    internal interface IBookRepository : IDisposable
+    public interface IBookRepository
     {
         IEnumerable<Book> GetBooks();
         Book GetBook(int id);
