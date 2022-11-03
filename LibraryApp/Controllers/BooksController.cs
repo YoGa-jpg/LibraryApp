@@ -33,9 +33,9 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetAllBooks()
+        public async Task<IActionResult> GetAllBooks()
         {
-            var response = _bookService.GetBooks();
+            var response = await _bookService.GetBooks();
             if (response.Result.Succeeded)
             {
                 return Ok(response.Books);
@@ -56,9 +56,9 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public IActionResult GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            var response = _bookService.GetBook(id);
+            var response = await _bookService.GetBook(id);
             if (response.Result.Succeeded)
             {
                 return Ok(response.Book);
@@ -78,9 +78,9 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult CreateBook([FromBody]Book book)
+        public async Task<IActionResult> CreateBook([FromBody]Book book)
         {
-            var response = _bookService.CreateBook(book);
+            var response = await _bookService.CreateBook(book);
             if (response.Result.Succeeded)
             {
                 _logger.LogWarning($"Created book: {book.Title}");
@@ -103,9 +103,9 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult UpdateBook([FromBody]Book book)
+        public async Task<IActionResult> UpdateBook([FromBody]Book book)
         {
-            var response = _bookService.UpdateBook(book);
+            var response = await _bookService.UpdateBook(book);
             if (response.Result.Succeeded)
             {
                 _logger.LogWarning($"Updated book: ID({book.Id})");
@@ -128,9 +128,9 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DeleteBook(int id)
+        public async Task<IActionResult> DeleteBook(int id)
         {
-            var response = _bookService.DeleteBook(id);
+            var response = await _bookService.DeleteBook(id);
             if (response.Result.Succeeded)
             {
                 _logger.LogWarning($"Deleted book: ({id})");

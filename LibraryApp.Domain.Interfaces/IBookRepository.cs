@@ -9,11 +9,11 @@ namespace LibraryApp.Domain.Interfaces
 {
     public interface IBookRepository
     {
-        IEnumerable<Book> GetBooks();
-        Book GetBook(int id);
-        int? Create(Book book);
-        int? Update(Book book);
-        int? Delete(int id);
+        Task<IEnumerable<Book>> GetBooks();
+        Task<Book> GetBook(int id);
+        Task<int?> Create(Book book);
+        Task<int?> Update(Book book);
+        Task<int?> Delete(int id);
         void Save();
     }
 }

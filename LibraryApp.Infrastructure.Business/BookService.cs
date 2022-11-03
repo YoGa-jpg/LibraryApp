@@ -25,7 +25,7 @@ namespace LibraryApp.Infrastructure.Business
             _bookRepository = bookRepository;
         }
 
-        public BookResponse GetBook(int id)
+        public async Task<BookResponse> GetBook(int id)
         {
             try
             {
@@ -35,7 +35,7 @@ namespace LibraryApp.Infrastructure.Business
                         "Incorrect ID");
                 }
 
-                var book = _bookRepository.GetBook(id);
+                var book = await _bookRepository.GetBook(id);
 
                 if (book == null)
                 {
@@ -52,7 +52,7 @@ namespace LibraryApp.Infrastructure.Business
             }
         }
 
-        public BookCreateResponse CreateBook(Book book)
+        public async Task<BookCreateResponse> CreateBook(Book book)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace LibraryApp.Infrastructure.Business
                         "Incorrect data provided");
                 }
 
-                var id = _bookRepository.Create(book);
+                var id = await _bookRepository.Create(book);
                 _bookRepository.Save();
 
                 return new BookCreateResponse { Id = id };
@@ -74,11 +74,11 @@ namespace LibraryApp.Infrastructure.Business
             }
         }
 
-        public BooksResponse GetBooks()
+        public async Task<BooksResponse> GetBooks()
         {
             try
             {
-                var response = _bookRepository.GetBooks();
+                var response = await _bookRepository.GetBooks();
 
                 if (response == null || !response.Any())
                 {
@@ -95,7 +95,7 @@ namespace LibraryApp.Infrastructure.Business
             }
         }
 
-        public BaseResponse DeleteBook(int id)
+        public async Task<BaseResponse> DeleteBook(int id)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace LibraryApp.Infrastructure.Business
                         "Incorrect ID");
                 }
 
-                if (_bookRepository.Delete(id) > 0)
+                if (await _bookRepository.Delete(id) > 0)
                 {
                     _bookRepository.Save();
                     return BaseResponse.Success;
@@ -121,7 +121,7 @@ namespace LibraryApp.Infrastructure.Business
             }
         }
 
-        public BaseResponse UpdateBook(Book book)
+        public async Task<BaseResponse> UpdateBook(Book book)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace LibraryApp.Infrastructure.Business
                         "Incorrect data provided");
                 }
 
-                if (_bookRepository.Update(book) > 0)
+                if (await _bookRepository.Update(book) > 0)
                 {
                     _bookRepository.Save();
                     return BaseResponse.Success;

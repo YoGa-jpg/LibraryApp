@@ -11,14 +11,14 @@ namespace LibraryApp.Services.Interfaces
 {
     public interface IBookService
     {
-        BookCreateResponse CreateBook(Book user);
+        Task<BookCreateResponse> CreateBook(Book user);
 
-        BookResponse GetBook(int id);
+        Task<BookResponse> GetBook(int id);
 
-        BaseResponse UpdateBook(Book user);
+        Task<BaseResponse> UpdateBook(Book user);
 
-        BaseResponse DeleteBook(int id);
+        Task<BaseResponse> DeleteBook(int id);
 
-        BooksResponse GetBooks();
+        Task<BooksResponse> GetBooks();
     }
 }

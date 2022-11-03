@@ -18,39 +18,40 @@ namespace LibraryApp.Infrastructure.Data.Repositories
             this.dataContext = dataContext;
         }
 
-        public int? Create(Book book)
+        public async Task<int?> Create(Book book)
         {
-            dataContext.Books.Add(book);
+            await dataContext.Books.AddAsync(book);
             return dataContext.Books.ToList().Last().Id + 1;
         }
 
-        public int? Delete(int id)
+        public async Task<int?> Delete(int id)
         {
-            Book book = dataContext.Books.Find(id);
+            Book book = await dataContext.Books.FindAsync(id);
             if (book != null)
                 dataContext.Books.Remove(book);
             return book?.Id;
         }
 
-        public Book GetBook(int id)
+        public async Task<Book> GetBook(int id)
         {
-            return dataContext.Books.Find(id);
+            return await dataContext.Books.FindAsync(id);
         }
 
-        public IEnumerable<Book> GetBooks()
+        public async Task<IEnumerable<Book>> GetBooks()
         {
-            return dataContext.Books;
+            var books = await Task.Run(() => dataContext.Books);
+            return books;
         }
 
-        public int? Update(Book book)
+        public async Task<int?> Update(Book book)
         {
-            dataContext.Entry(book).State = EntityState.Modified;
+            await Task.Run(() => dataContext.Entry(book).State = EntityState.Modified);
             return book.Id;
         }
 
-        public void Save()
+        public async void Save()
         {
-            dataContext.SaveChanges();
+            await dataContext.SaveChangesAsync();
         }
     }
 }
