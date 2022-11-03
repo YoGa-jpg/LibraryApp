@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using LibraryApp.Domain.Core;
 using LibraryApp.Domain.Interfaces;
-using System.Reflection.PortableExecutable;
 
 namespace LibraryApp.Infrastructure.Data.Repositories
 {

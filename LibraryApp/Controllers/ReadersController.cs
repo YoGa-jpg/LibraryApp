@@ -1,7 +1,5 @@
 ﻿using LibraryApp.Domain.Core;
-using LibraryApp.Infrastructure.Data;
 using LibraryApp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryApp.Controllers

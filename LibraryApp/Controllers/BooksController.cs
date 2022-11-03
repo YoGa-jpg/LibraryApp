@@ -2,7 +2,6 @@
 using LibraryApp.Infrastructure.Data;
 using LibraryApp.Domain.Core;
 using LibraryApp.Services.Interfaces;
-using System.Net;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
