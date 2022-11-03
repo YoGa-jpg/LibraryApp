@@ -33,6 +33,8 @@ namespace LibraryApp
             builder.Services.AddScoped<IBookRepository, BookRepository>();
             builder.Services.AddScoped<IReaderRepository, ReaderRepository>();
             builder.Services.AddScoped<IReaderService, ReaderService>();
+            builder.Services.AddScoped<IOrderService, OrderService>();
+            builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 
             var app = builder.Build();
 

@@ -1,74 +1,79 @@
 ﻿using LibraryApp.Domain.Core;
-using LibraryApp.Infrastructure.Data;
 using LibraryApp.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace LibraryApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReadersController : ControllerBase
+    public class OrdersController : ControllerBase
     {
-        public readonly IReaderService _readerService;
-        public readonly ILogger<ReadersController> _logger;
+        public readonly IOrderService _orderService;
+        public readonly ILogger<OrdersController> _logger;
 
-        public ReadersController(IReaderService readerService, ILogger<ReadersController> logger)
+        public OrdersController(IOrderService orderService, ILogger<OrdersController> logger)
         {
-            _readerService = readerService;
+            _orderService = orderService;
             _logger = logger;
         }
 
         /// <summary>
-        /// Get all readers
+        /// Get all orders
         /// </summary>
-        /// <remarks>Sample request: GET /readers</remarks>
-        /// <returns>Returns IEnumerable of readers</returns>
+        /// <remarks>Sample request: GET /orders</remarks>
+        /// <returns>Returns IEnumerable of orders</returns>
         /// <response code="200">Success</response>
-        /// <response code="404">Reader not found</response>
+        /// <response code="404">Order not found</response>
         /// <response code="500">Any exception</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> GetAllReaders()
+        public async Task<IActionResult> GetAllOrders()
         {
-            var response = await _readerService.GetReaders();
+            var response = await _orderService.GetOrders();
             if (response.Result.Succeeded)
             {
-                return Ok(response.Readers);
+                return Ok(response.Orders);
             }
 
             return StatusCode((int)response.Result.Error.Key);
         }
 
         /// <summary>
-        /// Get reader by ID
+        /// Get order by ID
         /// </summary>
-        /// <remarks>Sample request: GET /readers/{5}</remarks>
-        /// <returns>Returns reader object</returns>
+        /// <remarks>Sample request: GET /orders/{5}</remarks>
+        /// <returns>Returns order object</returns>
         /// <response code="200">Success</response>
-        /// <response code="404">Reader not found</response>
+        /// <response code="404">Order not found</response>
         /// <response code="422">Bad ID</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
-        public async Task<IActionResult> GetBook(int id)
+        public async Task<IActionResult> GetOrder(int id)
         {
-            var response = await _readerService.GetReader(id);
+            var response = await _orderService.GetOrder(id);
             if (response.Result.Succeeded)
             {
-                return Ok(response.Reader);
+                return Ok(response.Order);
             }
 
             return StatusCode((int)response.Result.Error.Key);
         }
 
         /// <summary>
-        /// Create reader by object
+        /// Create order by object
         /// </summary>
-        /// <remarks>Sample request: POST /readers {"firstname": "vlad","lastname": "ivanov"}</remarks>
+        /// <remarks>Sample request: POST /orders {
+        ///  "orderDate": "2022-11-03T19:46:39.019Z",
+        ///  "expireDate": "2022-11-03T19:46:39.019Z",
+        ///  "readerId": 1,
+        ///  "bookId": 2
+        ///}</remarks>
         /// <response code="200">Success</response>
         /// <response code="400">Incorrect data provided</response>
         /// <response code="500">Any exception</response>
@@ -76,12 +81,12 @@ namespace LibraryApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> CreateReader([FromBody] Reader reader)
+        public async Task<IActionResult> CreateOrder([FromBody] Order order)
         {
-            var response = await _readerService.CreateReader(reader);
+            var response = await _orderService.CreateOrder(order);
             if (response.Result.Succeeded)
             {
-                _logger.LogWarning($"Created reader: {reader.Lastname}");
+                _logger.LogWarning($"Created order: {order.Id}");
                 return Ok(response.Id);
             }
 
@@ -89,24 +94,30 @@ namespace LibraryApp.Controllers
         }
 
         /// <summary>
-        /// Update reader by another
+        /// Update order by another
         /// </summary>
-        /// <remarks>Sample request: PUT /readers {"id": 3,"firstname": "vlad","lastname": "ivanov"}</remarks>
+        /// <remarks>Sample request: PUT /orders {
+        /// "id": 2,
+        ///  "orderDate": "2022-11-03T19:46:39.019Z",
+        ///  "expireDate": "2022-11-03T19:46:39.019Z",
+        ///  "readerId": 1,
+        ///  "bookId": 2
+        ///}</remarks>
         /// <response code="200">Success</response>
         /// <response code="400">Incorrect data provided</response>
-        /// <response code="404">Reader for updating not found</response>
+        /// <response code="404">Order for updating not found</response>
         /// <response code="500">Any exception</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateReader([FromBody] Reader reader)
+        public async Task<IActionResult> UpdateOrder([FromBody] Order order)
         {
-            var response = await _readerService.UpdateReader(reader);
+            var response = await _orderService.UpdateOrder(order);
             if (response.Result.Succeeded)
             {
-                _logger.LogWarning($"Updated reader: ID({reader.Id})");
+                _logger.LogWarning($"Updated order: ID({order.Id})");
                 return Ok();
             }
 
@@ -114,24 +125,24 @@ namespace LibraryApp.Controllers
         }
 
         /// <summary>
-        /// Delete reader by ID
+        /// Delete order by ID
         /// </summary>
-        /// <remarks>Sample request: DELETE /readers/{6}</remarks>
+        /// <remarks>Sample request: DELETE /orders/{6}</remarks>
         /// <response code="200">Success</response>
         /// <response code="400">Incorrect data provided</response>
-        /// <response code="404">Reader for deletion not found</response>
+        /// <response code="404">Order for deletion not found</response>
         /// <response code="500">Any exception</response>
         [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> DeleteReader(int id)
+        public async Task<IActionResult> DeleteOrder(int id)
         {
-            var response = await _readerService.DeleteReader(id);
+            var response = await _orderService.DeleteOrder(id);
             if (response.Result.Succeeded)
             {
-                _logger.LogWarning($"Deleted reader: ({id})");
+                _logger.LogWarning($"Deleted order: ({id})");
                 return Ok();
             }
 

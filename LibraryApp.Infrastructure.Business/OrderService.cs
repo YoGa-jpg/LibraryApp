@@ -1,6 +1,7 @@
 ﻿using LibraryApp.Domain.Core;
 using LibraryApp.Domain.Core.Responses;
 using LibraryApp.Domain.Core.Responses.Books;
+using LibraryApp.Domain.Core.Responses.Orders;
 using LibraryApp.Domain.Core.Responses.Readers;
 using LibraryApp.Domain.Interfaces;
 using LibraryApp.Infrastructure.Data.Repositories;
@@ -9,43 +10,44 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LibraryApp.Infrastructure.Business
 {
-    public class ReaderService : IReaderService
+    public class OrderService : IOrderService
     {
-        private readonly IReaderRepository _readerRepository;
+        private readonly IOrderRepository _orderRepository;
 
-        public ReaderService(IReaderRepository readerRepository)
+        public OrderService(IOrderRepository orderRepository)
         {
-            _readerRepository = readerRepository;
+            _orderRepository = orderRepository;
         }
 
-        public async Task<ReaderCreateResponse> CreateReader(Reader reader)
+        public async Task<OrderCreateResponse> CreateOrder(Order order)
         {
             try
             {
-                if (reader == null)
+                if (order == null)
                 {
-                    return BaseResponse.Failure<ReaderCreateResponse>(HttpStatusCode.BadRequest,
+                    return BaseResponse.Failure<OrderCreateResponse>(HttpStatusCode.BadRequest,
                         "Incorrect data provided");
                 }
 
-                var id = await _readerRepository.Create(reader);
-                await _readerRepository.Save();
+                var id = await _orderRepository.Create(order);
+                await _orderRepository.Save();
 
-                return new ReaderCreateResponse { Id = id };
+                return new OrderCreateResponse { Id = id };
             }
             catch (Exception ex)
             {
-                return BaseResponse.Failure<ReaderCreateResponse>(HttpStatusCode.InternalServerError,
+                return BaseResponse.Failure<OrderCreateResponse>(HttpStatusCode.InternalServerError,
                     ex.Message);
             }
         }
 
-        public async Task<BaseResponse> DeleteReader(int id)
+        public async Task<BaseResponse> DeleteOrder(int id)
         {
             try
             {
@@ -55,14 +57,14 @@ namespace LibraryApp.Infrastructure.Business
                         "Incorrect ID");
                 }
 
-                if (await _readerRepository.Delete(id) > 0)
+                if (await _orderRepository.Delete(id) > 0)
                 {
-                    await _readerRepository.Save();
+                    await _orderRepository.Save();
                     return BaseResponse.Success;
                 }
 
                 return BaseResponse.Failure(HttpStatusCode.NotFound,
-                    "Reader is not found");
+                    "Order is not found");
             }
             catch (Exception ex)
             {
@@ -71,72 +73,72 @@ namespace LibraryApp.Infrastructure.Business
             }
         }
 
-        public async Task<ReaderResponse> GetReader(int id)
+        public async Task<OrderResponse> GetOrder(int id)
         {
             try
             {
                 if (id <= 0)
                 {
-                    return BaseResponse.Failure<ReaderResponse>(HttpStatusCode.UnprocessableEntity,
+                    return BaseResponse.Failure<OrderResponse>(HttpStatusCode.UnprocessableEntity,
                         "Incorrect ID");
                 }
 
-                var reader = await _readerRepository.GetReader(id);
+                var order = await _orderRepository.GetOrder(id);
 
-                if (reader == null)
+                if (order == null)
                 {
-                    return BaseResponse.Failure<ReaderResponse>(HttpStatusCode.NotFound,
-                        "Reader not found");
+                    return BaseResponse.Failure<OrderResponse>(HttpStatusCode.NotFound,
+                        "Order not found");
                 }
 
-                return new ReaderResponse { Reader = reader };
+                return new OrderResponse { Order = order };
             }
             catch (Exception ex)
             {
-                return BaseResponse.Failure<ReaderResponse>(HttpStatusCode.InternalServerError,
+                return BaseResponse.Failure<OrderResponse>(HttpStatusCode.InternalServerError,
                     ex.Message);
             }
         }
 
-        public async Task<ReadersResponse> GetReaders()
+        public async Task<OrdersResponse> GetOrders()
         {
             try
             {
-                var response = await _readerRepository.GetReaders();
+                var response = await _orderRepository.GetOrders();
 
                 if (response == null || !response.Any())
                 {
-                    return BaseResponse.Failure<ReadersResponse>(HttpStatusCode.NotFound,
-                        "Readers not found");
+                    return BaseResponse.Failure<OrdersResponse>(HttpStatusCode.NotFound,
+                        "Orders not found");
                 }
 
-                return new ReadersResponse { Readers = response };
+                return new OrdersResponse { Orders = response };
             }
             catch (Exception ex)
             {
-                return BaseResponse.Failure<ReadersResponse>(HttpStatusCode.InternalServerError,
+                return BaseResponse.Failure<OrdersResponse>(HttpStatusCode.InternalServerError,
                     ex.Message);
             }
         }
 
-        public async Task<BaseResponse> UpdateReader(Reader reader)
+        public async Task<BaseResponse> UpdateOrder(Order order)
         {
             try
             {
-                if (reader == null)
+                if (order == null)
                 {
-                    return BaseResponse.Failure<ReaderCreateResponse>(HttpStatusCode.BadRequest,
+                    return BaseResponse.Failure<OrderCreateResponse>(HttpStatusCode.BadRequest,
                         "Incorrect data provided");
                 }
 
-                if (await _readerRepository.Update(reader) > 0)
+                if (await _orderRepository.Update(order) > 0)
                 {
-                    await _readerRepository.Save();
+                    await _orderRepository.Save();
                     return BaseResponse.Success;
                 }
 
                 return BaseResponse.Failure(HttpStatusCode.NotFound,
-                    "Reader is not found");
+                    "Order is not found");
             }
             catch (Exception ex)
             {

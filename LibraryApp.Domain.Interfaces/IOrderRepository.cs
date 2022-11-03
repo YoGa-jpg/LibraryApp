@@ -9,10 +9,11 @@ namespace LibraryApp.Domain.Interfaces
 {
     public interface IOrderRepository
     {
-        IEnumerable<Order> GetOrders();
-        Order GetOrder(int id);
-        void Create(Order order);
-        void Update(Order order);
-        void Delete(int id);
+        Task<IEnumerable<Order>> GetOrders();
+        Task<Order> GetOrder(int id);
+        Task<int?> Create(Order order);
+        Task<int?> Update(Order order);
+        Task<int?> Delete(int id);
+        Task Save();
     }
 }

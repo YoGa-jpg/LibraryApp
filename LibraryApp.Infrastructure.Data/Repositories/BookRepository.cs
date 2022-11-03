@@ -21,7 +21,7 @@ namespace LibraryApp.Infrastructure.Data.Repositories
         public async Task<int?> Create(Book book)
         {
             await dataContext.Books.AddAsync(book);
-            return dataContext.Books.ToList().Last().Id + 1;
+            return dataContext.Books.Count() > 0 ? dataContext.Books.ToList().Last().Id + 1 : 1;
         }
 
         public async Task<int?> Delete(int id)

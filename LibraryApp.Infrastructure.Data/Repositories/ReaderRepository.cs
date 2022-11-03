@@ -21,7 +21,7 @@ namespace LibraryApp.Infrastructure.Data.Repositories
         public async Task<int?> Create(Reader reader)
         {
             await dataContext.Readers.AddAsync(reader);
-            return dataContext.Readers.ToList().Last().Id + 1;
+            return dataContext.Readers.Count() > 0 ? dataContext.Readers.ToList().Last().Id + 1 : 1;
         }
 
         public async Task<int?> Delete(int id)

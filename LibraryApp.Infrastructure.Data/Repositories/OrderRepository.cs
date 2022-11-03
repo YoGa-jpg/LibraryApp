@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using LibraryApp.Domain.Core;
 using LibraryApp.Domain.Interfaces;
+using System.Reflection.PortableExecutable;
 
 namespace LibraryApp.Infrastructure.Data.Repositories
 {
@@ -18,30 +19,39 @@ namespace LibraryApp.Infrastructure.Data.Repositories
             this.dataContext = dataContext;
         }
 
-        public void Create(Order order)
+        public async Task<int?> Create(Order order)
         {
-            dataContext.Orders.Add(order);
+            await dataContext.Orders.AddAsync(order);
+            return dataContext.Orders.Count() > 0 ? (dataContext.Orders.ToList().Last().Id + 1) : 1;
         }
-        public void Delete(int id)
+        public async Task<int?> Delete(int id)
         {
-            Order order = dataContext.Orders.Find(id);
-            if(order != null)
+            Order order = await dataContext.Orders.FindAsync(id);
+            if (order != null)
                 dataContext.Orders.Remove(order);
+            return order?.Id;
         }
 
-        public Order GetOrder(int id)
+        public async Task<Order> GetOrder(int id)
         {
-            return dataContext.Orders.Find(id);
+            return await dataContext.Orders.FindAsync(id);
         }
 
-        public IEnumerable<Order> GetOrders()
+        public async Task<IEnumerable<Order>> GetOrders()
         {
-            return dataContext.Orders;
+            var orders = await Task.Run(() => dataContext.Orders);
+            return orders;
         }
 
-        public void Update(Order order)
+        public async Task<int?> Update(Order order)
         {
-            dataContext.Entry(order).State = EntityState.Modified;
+            await Task.Run(() => dataContext.Entry(order).State = EntityState.Modified);
+            return order.Id;
+        }
+
+        public async Task Save()
+        {
+            await dataContext.SaveChangesAsync();
         }
     }
 }
