@@ -14,11 +14,13 @@ namespace LibraryApp.Controllers
     {
         UnitOfWork unit;
         public readonly IBookService _bookService;
+        public readonly ILogger<BooksController> _logger;
 
-        public BooksController(DataContext context, IBookService bookService)
+        public BooksController(DataContext context, IBookService bookService, ILogger<BooksController> logger)
         {
             unit = new UnitOfWork(context);
             _bookService = bookService;
+            _logger = logger;
         }
 
         // GET: api/<BooksController>
@@ -54,6 +56,7 @@ namespace LibraryApp.Controllers
             var response = _bookService.CreateBook(book);
             if (response.Result.Succeeded)
             {
+                _logger.LogWarning($"Created book: {book.Title}");
                 return Ok(response.Id);
             }
 
@@ -67,6 +70,7 @@ namespace LibraryApp.Controllers
             var response = _bookService.UpdateBook(book);
             if (response.Result.Succeeded)
             {
+                _logger.LogWarning($"Updated book: ID({book.Id})");
                 return Ok();
             }
 
@@ -80,6 +84,7 @@ namespace LibraryApp.Controllers
             var response = _bookService.DeleteBook(id);
             if (response.Result.Succeeded)
             {
+                _logger.LogWarning($"Deleted book: ({id})");
                 return Ok();
             }
 
