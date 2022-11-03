@@ -9,10 +9,11 @@ namespace LibraryApp.Domain.Interfaces
 {
     public interface IReaderRepository
     {
-        IEnumerable<Reader> GetReaders();
-        Reader GetReader(int id);
-        void Create(Reader reader);
-        void Update(Reader reader);
-        void Delete(int id);
+        Task<IEnumerable<Reader>> GetReaders();
+        Task<Reader> GetReader(int id);
+        Task<int?> Create(Reader reader);
+        Task<int?> Update(Reader reader);
+        Task<int?> Delete(int id);
+        Task Save();
     }
 }
