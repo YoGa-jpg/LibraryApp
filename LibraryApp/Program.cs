@@ -31,6 +31,8 @@ namespace LibraryApp
                     x => x.MigrationsAssembly("LibraryApp")));
             builder.Services.AddScoped<IBookService, BookService>();
             builder.Services.AddScoped<IBookRepository, BookRepository>();
+            builder.Services.AddScoped<IReaderRepository, ReaderRepository>();
+            builder.Services.AddScoped<IReaderService, ReaderService>();
 
             var app = builder.Build();
 
