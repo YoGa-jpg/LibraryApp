@@ -4,6 +4,7 @@ using LibraryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LibraryApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221103102233_OrderNotReq")]
+    partial class OrderNotReq
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,7 +90,7 @@ namespace LibraryApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("BookId")
+                    b.Property<int>("BookId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ExpireDate")
@@ -97,14 +99,13 @@ namespace LibraryApp.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("ReaderId")
+                    b.Property<int>("ReaderId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BookId")
-                        .IsUnique()
-                        .HasFilter("[BookId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("ReaderId");
 
@@ -168,11 +169,15 @@ namespace LibraryApp.Migrations
                 {
                     b.HasOne("LibraryApp.Domain.Core.Book", "Book")
                         .WithOne("Order")
-                        .HasForeignKey("LibraryApp.Domain.Core.Order", "BookId");
+                        .HasForeignKey("LibraryApp.Domain.Core.Order", "BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LibraryApp.Domain.Core.Reader", "Reader")
                         .WithMany("Orders")
-                        .HasForeignKey("ReaderId");
+                        .HasForeignKey("ReaderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Book");
 
