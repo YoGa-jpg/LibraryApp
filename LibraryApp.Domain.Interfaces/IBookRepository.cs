@@ -11,8 +11,9 @@ namespace LibraryApp.Domain.Interfaces
     {
         IEnumerable<Book> GetBooks();
         Book GetBook(int id);
-        void Create(Book book);
-        void Update(Book book);
-        void Delete(int id);
+        int? Create(Book book);
+        int? Update(Book book);
+        int? Delete(int id);
+        void Save();
     }
 }

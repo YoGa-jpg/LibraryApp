@@ -21,7 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LibraryApp.Infrastructure.Business\LibraryApp.Infrastructure.Business.csproj" />
     <ProjectReference Include="..\LibraryApp.Infrastructure.Data\LibraryApp.Infrastructure.Data.csproj" />
+    <ProjectReference Include="..\LibraryApp.Services.Interfaces\LibraryApp.Services.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

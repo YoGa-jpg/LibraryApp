@@ -18,16 +18,18 @@ namespace LibraryApp.Infrastructure.Data.Repositories
             this.dataContext = dataContext;
         }
 
-        public void Create(Book book)
+        public int? Create(Book book)
         {
             dataContext.Books.Add(book);
+            return dataContext.Books.ToList().Last().Id + 1;
         }
 
-        public void Delete(int id)
+        public int? Delete(int id)
         {
             Book book = dataContext.Books.Find(id);
             if (book != null)
                 dataContext.Books.Remove(book);
+            return book?.Id;
         }
 
         public Book GetBook(int id)
@@ -40,9 +42,15 @@ namespace LibraryApp.Infrastructure.Data.Repositories
             return dataContext.Books;
         }
 
-        public void Update(Book book)
+        public int? Update(Book book)
         {
             dataContext.Entry(book).State = EntityState.Modified;
+            return book.Id;
+        }
+
+        public void Save()
+        {
+            dataContext.SaveChanges();
         }
     }
 }

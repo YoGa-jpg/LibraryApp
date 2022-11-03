@@ -1,5 +1,9 @@
 using LibraryApp.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using LibraryApp.Services.Interfaces;
+using LibraryApp.Infrastructure.Business;
+using LibraryApp.Domain.Interfaces;
+using LibraryApp.Infrastructure.Data.Repositories;
 
 namespace LibraryApp
 {
@@ -19,6 +23,8 @@ namespace LibraryApp
                 options => options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"),
                     x => x.MigrationsAssembly("LibraryApp")));
+            builder.Services.AddScoped<IBookService, BookService>();
+            builder.Services.AddScoped<IBookRepository, BookRepository>();
 
             var app = builder.Build();
 
