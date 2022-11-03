@@ -14,6 +14,12 @@ namespace LibraryApp.Infrastructure.Data
         public DbSet<Reader> Readers { get; set; } = null!;
         public DbSet<Order> Orders { get; set; } = null!;
 
+        public DataContext(DbContextOptions<DataContext> options)
+            : base(options)
+        {
+            //Database.EnsureCreated();   // создаем базу данных при первом обращении
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Reader>()
@@ -40,6 +46,9 @@ namespace LibraryApp.Infrastructure.Data
                 .Property(b => b.Author).HasMaxLength(40).IsRequired();
             modelBuilder.Entity<Book>()
                 .Property(b => b.Title).IsRequired();
+            modelBuilder.Entity<Book>()
+                .Property(b => b.OrderId)
+                .IsRequired(false);
 
             modelBuilder.Entity<Order>()
                 .Property(o => o.Id)
@@ -48,6 +57,10 @@ namespace LibraryApp.Infrastructure.Data
                 .Property(o => o.OrderDate).IsRequired();
             modelBuilder.Entity<Order>()
                 .Property(o => o.ExpireDate).IsRequired();
+            modelBuilder.Entity<Order>()
+                .Property(o => o.BookId).IsRequired(false);
+            modelBuilder.Entity<Order>()
+                .Property(o => o.ReaderId).IsRequired(false);
 
             modelBuilder.Entity<Reader>().HasData(
                 new Reader { Id = 1, Firstname = "Антон", Lastname = "Давидович" },

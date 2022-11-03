@@ -9,10 +9,15 @@ namespace LibraryApp.Infrastructure.Data
 {
     public class UnitOfWork : IDisposable
     {
-        private DataContext dataContext = new DataContext();
+        private DataContext dataContext; //= new DataContext();
         private BookRepository bookRepository;
         private OrderRepository orderRepository;
         private ReaderRepository readerRepository;
+
+        public UnitOfWork(DataContext dataContext)
+        {
+            this.dataContext = dataContext;
+        }
 
         public BookRepository Books
         {
