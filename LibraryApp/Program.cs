@@ -4,6 +4,7 @@ using LibraryApp.Services.Interfaces;
 using LibraryApp.Infrastructure.Business;
 using LibraryApp.Domain.Interfaces;
 using LibraryApp.Infrastructure.Data.Repositories;
+using System.Reflection;
 
 namespace LibraryApp
 {
@@ -18,7 +19,12 @@ namespace LibraryApp
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(config =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+            });
             builder.Services.AddDbContext<DataContext>(
                 options => options.UseSqlServer(
                     builder.Configuration.GetConnectionString("DefaultConnection"),

@@ -12,19 +12,27 @@ namespace LibraryApp.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        UnitOfWork unit;
         public readonly IBookService _bookService;
         public readonly ILogger<BooksController> _logger;
 
         public BooksController(DataContext context, IBookService bookService, ILogger<BooksController> logger)
         {
-            unit = new UnitOfWork(context);
             _bookService = bookService;
             _logger = logger;
         }
 
-        // GET: api/<BooksController>
+        /// <summary>
+        /// Get all books
+        /// </summary>
+        /// <remarks>Sample request: GET /books</remarks>
+        /// <returns>Returns IEnumerable of books</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">Book not found</response>
+        /// <response code="500">Any exception</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllBooks()
         {
             var response = _bookService.GetBooks();
@@ -36,8 +44,18 @@ namespace LibraryApp.Controllers
             return StatusCode((int)response.Result.Error.Key);
         }
 
-        // GET api/<BooksController>/5
+        /// <summary>
+        /// Get book by ID
+        /// </summary>
+        /// <remarks>Sample request: GET /books/{5}</remarks>
+        /// <returns>Returns book object</returns>
+        /// <response code="200">Success</response>
+        /// <response code="404">Book not found</response>
+        /// <response code="422">Bad ID</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         public IActionResult GetBook(int id)
         {
             var response = _bookService.GetBook(id);
@@ -49,8 +67,17 @@ namespace LibraryApp.Controllers
             return StatusCode((int)response.Result.Error.Key);
         }
 
-        // POST api/<BooksController>
+        /// <summary>
+        /// Create book by object
+        /// </summary>
+        /// <remarks>Sample request: POST /books {"title": "книга","author": "автор"}</remarks>
+        /// <response code="200">Success</response>
+        /// <response code="400">Incorrect data provided</response>
+        /// <response code="500">Any exception</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult CreateBook([FromBody]Book book)
         {
             var response = _bookService.CreateBook(book);
@@ -63,8 +90,19 @@ namespace LibraryApp.Controllers
             return StatusCode((int)response.Result.Error.Key);
         }
 
-        // PUT api/<BooksController>/5
+        /// <summary>
+        /// Update book by another
+        /// </summary>
+        /// <remarks>Sample request: PUT /books {"id": 5, "title": "книга","author": "автор"}</remarks>
+        /// <response code="200">Success</response>
+        /// <response code="400">Incorrect data provided</response>
+        /// <response code="404">Book for updating not found</response>
+        /// <response code="500">Any exception</response>
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult UpdateBook([FromBody]Book book)
         {
             var response = _bookService.UpdateBook(book);
@@ -77,8 +115,19 @@ namespace LibraryApp.Controllers
             return StatusCode((int)response.Result.Error.Key);
         }
 
-        // DELETE api/<BooksController>/5
+        /// <summary>
+        /// Delete book by ID
+        /// </summary>
+        /// <remarks>Sample request: DELETE /books/{6}</remarks>
+        /// <response code="200">Success</response>
+        /// <response code="400">Incorrect data provided</response>
+        /// <response code="404">Book for deletion not found</response>
+        /// <response code="500">Any exception</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult DeleteBook(int id)
         {
             var response = _bookService.DeleteBook(id);
