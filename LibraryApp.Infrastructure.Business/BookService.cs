@@ -40,7 +40,7 @@ namespace LibraryApp.Infrastructure.Business
                 if (book == null)
                 {
                     return BaseResponse.Failure<BookResponse>(HttpStatusCode.NotFound,
-                        "Book bot found");
+                        "Book not found");
                 }
 
                 return new BookResponse { Book = book };
@@ -63,7 +63,7 @@ namespace LibraryApp.Infrastructure.Business
                 }
 
                 var id = await _bookRepository.Create(book);
-                _bookRepository.Save();
+                await _bookRepository.Save();
 
                 return new BookCreateResponse { Id = id };
             }
@@ -107,7 +107,7 @@ namespace LibraryApp.Infrastructure.Business
 
                 if (await _bookRepository.Delete(id) > 0)
                 {
-                    _bookRepository.Save();
+                    await _bookRepository.Save();
                     return BaseResponse.Success;
                 }
 
@@ -133,7 +133,7 @@ namespace LibraryApp.Infrastructure.Business
 
                 if (await _bookRepository.Update(book) > 0)
                 {
-                    _bookRepository.Save();
+                    await _bookRepository.Save();
                     return BaseResponse.Success;
                 }
 

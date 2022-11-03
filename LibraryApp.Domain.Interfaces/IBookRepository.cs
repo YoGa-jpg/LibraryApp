@@ -14,6 +14,6 @@ namespace LibraryApp.Domain.Interfaces
         Task<int?> Create(Book book);
         Task<int?> Update(Book book);
         Task<int?> Delete(int id);
-        void Save();
+        Task Save();
     }
 }

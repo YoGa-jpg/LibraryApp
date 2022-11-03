@@ -49,7 +49,7 @@ namespace LibraryApp.Infrastructure.Data.Repositories
             return book.Id;
         }
 
-        public async void Save()
+        public async Task Save()
         {
             await dataContext.SaveChangesAsync();
         }
